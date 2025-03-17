@@ -18,3 +18,19 @@
 #### 2. JavaScript에서 비동기 함수는 정확하게 3,000ms를 기다렸다가 실행이 되나요?
 
 > 자바스크립트에서 setTimeout을 사용하여 실행시간을 3000ms로 설정하더라도 정확하게 3000ms 후에 실행된다는 보장이 없습니다. 이벤트 루프가 마이크로 태스트 큐를 먼저 실행하고, 콜백 큐에 있는 setTimeout 콜백 함수를 실행하기 때문에 오차가 있을 수 있습니다. 또한 콜스택이 비어있어야 콜백큐가 실행되기 때문에 동기 코드가 많다면 콜백 실행이 지연될 수 있습니다. 따라서 정확히 3000ms 후에 실행되는 것이 아니라 최소한 3000ms 이상 지연될 수 있습니다.
+
+#### 3. 정확하게 3,000ms를 기다리는 방법은 무엇인가요?
+
+> setInterval(1)과 Date.now()를 활용하면 정확한 3,000ms 실행을 보장할 수 있습니다.
+
+```javascript
+const startTime = Date.now();
+
+const interval = setInterval(() => {
+  const delay = Date.now() - startTime;
+  if (delay >= 3000) {
+    console.log("3000ms 지났습니다.");
+    clearInterval(interval);
+  }
+}, 1);
+```
