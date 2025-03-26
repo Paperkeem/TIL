@@ -26,7 +26,7 @@
 4. DOM과 CSSOM을 조합하여 렌더 트리 구축
 5. 뷰포트 기반으로 렌더 트리의 각 노드가 가지는 정확한 위치와 크기 계산(Layout 단계)
 6. 계산한 위치/크기를 기반으로 화면에 그리는 단계(Paint 단계)
-7. 요로 레이어를 합성하여 최종 화면을 출력하는 Composition 단계
+7. 요소 레이어를 합성하여 최종 화면을 출력하는 Composition 단계
 
 #### 2-2. JavaScript는 왜 HTML 파싱을 블로킹(blocking)할 수 있을까요?
 
@@ -47,14 +47,15 @@
 
 - Reflow : Layout 단계에서 수정이 발생하여 각 노드 위치를 렌더 트리에 다시 렌더링 할 때 발생합니다. 상위 엘리먼트가 변경될 시 하위 엘리먼트에 영향을 끼치기 때문에 비싼 작업입니다.
 
-- Repaint : Layout 과정에서 영향을 미치지 않고 변경된 요소를 화면에 그려줄 때 발생합니다.
+- Repaint : Layout 과정에서 영향을 미치지 않고 변경된 요소를 화면에 그려줄 때 발생합니다. 요소의 모양이나 스타일이 변경될 때 발생합니다. 요소의 레이아웃은 그대로이고, 색상이나 배경 등의 스타일만 변경되는 경우를 말합니다.
 
 ### Reflow와 Repaint 최소화 방법
 
 - position fixed, absolute는 다른 엘리먼트에 레이아웃에 영향을 주지 않기 때문에 비용을 줄일 수 있습니다.
-- display : none 사용 시 Reflow, Repaint가 발생하지 않습니다.
-- transform, opacity 속성 사용 시 Reflow, Repaint가 발생하지 않습니다.
+- `display : none` 사용 시 Reflow, Repaint가 발생하지 않습니다.
+- transform, opacity 속성 사용 시 이 두 속성은 GPU 가속을 사용할 수 있어 Reflow 없이 Repaint만 발생시키므로 CPU 자원을 적게 사용합니다.
 - requestAnimationFrame() 메소드를 이용해 브라우저의 프레임 속도(60fps)에 맞추어 지연 및 블로킹 없이 콜백을 실행할 수 있습니다.
+- will-change 속성을 사용하여 특정 요소의 변경을 미리 브라우저에 전달할 수 있습니다. `will-change: transform`으로 미리 GPU에서 요소를 준비하게 하여 reflow 및 repaint에 미치는 영향을 줄일 수 있습니다. 하지만 will-change 속성은 너무 자주 사용하면 메모리 낭비가 발생하므로 필요한 요소에만 적용해야 합니다.
 
 ### Javascript에서 Reflow 최소화 방법
 
