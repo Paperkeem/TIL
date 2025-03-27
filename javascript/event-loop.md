@@ -5,9 +5,9 @@
 > 자바스크립트의 이벤트루프는 싱글 스레드 기반으로 동작합니다. 비동기 코드(Promise, setTimeout 등)이 실행될때는 Web API 백그라운드로 보내지고, 이후 콜백 큐 혹은 마이크로태스트 큐에 들어가 이벤트 루프가 처리합니다.  
 > 콜스택에서 일반적인 동기 코드는 즉시 실행되고, 비동기 코드는 이벤트 루프를 거쳐 실행됩니다.
 
-1. setTimout / setInterval > 콜백 큐로 들어갑니다.
-2. Promise, queueMicrotask, MutationObserver > 마이크로 태스트 큐에 들어갑니다.
-3. requestAnimationFrame > 브라우저의 렌더링 단계에서 실행됩니다.
+1. setTimout / setInterval → 콜백 큐로 들어갑니다.
+2. Promise, queueMicrotask, MutationObserver → 마이크로 태스트 큐에 들어갑니다.
+3. requestAnimationFrame → 브라우저의 렌더링 단계에서 실행됩니다.
 
 실행 순서는
 
@@ -34,3 +34,12 @@ const interval = setInterval(() => {
   }
 }, 1);
 ```
+
+#### 4. requestAnimationFrame 동작 원리
+
+- requestAnimationFrame은 브라우저의 다음 리페인트 시점 이전에 지정한 콜백 함수를 실행하게 하는 API 입니다.
+- 브라우저가 화면을 다시 그리기 직전에 콜백을 실행하고, 기본적으로 60fps 기준으로 약 16.6ms간격으로 실행됩니다. 주로 애니메이션 최적화, 스무스한 UI 렌더링을 위해 사용됩니다.
+- requestAnimationFrame은 마이크로태스트 큐가 모두 실행되고 난 후 콜백 큐가 실행되기 전에 실행됩니다.
+
+> requestAnimationFrame → 애니메이션, 스크롤, 차트, 슬라이더  
+> setTimeout, setInterval → 일정 시간 후 실행, API polling
