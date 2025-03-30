@@ -103,3 +103,76 @@ return (
 2. 그 안에서 setState를 호출하면 컴포넌트가 다시 렌더링 됩니다.
 3. 두번째 인자 없이 useEffect는 모든 렌더링마다 실행됩니다.
 4. 무한 리렌더링이 일어납니다.
+
+#### 7. 컴포넌트의 리렌더링, 마운트
+
+1. 마운트
+
+- 컴포넌트가 DOM에 처음 추가될 시 발생
+- React 생명주기 중 useEffect(() => {}, [])가 실행되는 시점
+
+2. 리렌더링
+
+- 컴포넌트의 state나 props가 변경 됐을 때 발생
+
+```javascript
+const [count, setCount] = useState(0);
+// 컴포넌트가 리렌더링 될 때마다 함수 재생성
+const handleClick = () => setCount(count + 1);
+
+return <button onClick={handleClick}>클릭: {count}</button>;
+```
+
+- React 함수형 컴포넌트는 함수 전체가 다시 실행되기 때문에, 컴포넌트가 리렌더링 될 때마다 모든 변수와 함수가 다시 선언됩니다.
+- useEffect 내부에 있는 코드는 리렌더링마다 재생성되지만, 실행 여부는 두 번째 인자인 dependency array에 따라 달라집니다.
+
+##### ✅ 왜 useEffect의 dependency가 []이면 마운트 시에만 실행될까?
+
+```javascript
+useEffect(() => {
+  console.log("실행");
+}, []);
+```
+
+- 첫번째 인자의 함수는 컴포넌트가 리렌더링될 때마다 다시 선언됩니다.
+- React는 이 "새 함수"를 실행할지 말지를 두 번째 인자(dependency array)를 기준으로 결정합니다.
+
+> React는 이전에 등록한 함수와 이번에 등록한 함수의 의존성(dependencies)을 비교해서 실행 여부를 판단합니다.
+
+#### 8. useEffect의 dependency
+
+```javascript
+import { useCallback, useEffect, useRef } from "react";
+
+export default function useIntersection(handler, options = {}) {
+  const ref = useRef(null);
+
+  const callback = useCallback(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) handler(entry, observer);
+      });
+    },
+    [handler]
+  );
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    let observer = new IntersectionObserver(callback, options);
+    observer.observe(ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [callback, options]); // 🔍 dependency 배열에 callback을 추가하지 않을 경우?
+
+  return ref;
+}
+```
+
+##### ❌ callback을 useEffect 디펜던시에 넣지 않은 경우 발생하는 문제
+
+- useEffect 내부의 callback이 처음 마운트될 때의 handler만 기억합니다.
+- 이후 handler가 업데이트되어도 callback 내부에서는 여전히 오래된 callback을 호출합니다.
+- 최신 상태를 반영하지 못하는 클로저 문제(closure stale state issue) 가 발생할 수 있습니다.
