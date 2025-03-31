@@ -53,3 +53,46 @@ class DataCache {
     this.cacheDurations.clear();
   }
 }
+
+function memoize(fn) {
+  const cache = new Map();
+
+  return function (args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+
+    const result = fn(args);
+    cache.set(key, result);
+    return result;
+  };
+}
+
+function weakMapMemoize(fn) {
+  const cache = new WeakMap();
+
+  return function (arg) {
+    if (typeof arg !== "object" || arg === null) {
+      throw new Error("WeakMap은 오직 객체를 키로 사용할 수 있습니다.");
+    }
+
+    if (cache.has(arg)) {
+      return cache.get(arg);
+    }
+
+    const result = fn(arg);
+    cache.set(arg, result);
+    return result;
+  };
+}
+
+const user = { name: "JongeeKim" };
+
+const getUserName = weakMapMemoize((user) => {
+  console.log("캐싱 중...");
+  return user.name.toUpperCase();
+});
+
+console.log(getUserName(user)); // 캐싱 중... JongeeKim
+console.log(getUserName(user)); // JongeeKim
