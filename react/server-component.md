@@ -15,6 +15,8 @@
 
 #### 2. 클라이언트 컴포넌트를 'use client'로 선언했을 시 렌더링이 CSR로 이루어지는지?
 
+> 페이지 전체는 서버에서 pre-render 되고(SSR or SSG), 그 안에 client component 자리는 hydration용 placeholder로 남겨집니다.
+
 > "use client"를 선언한 컴포넌트는 초기 렌더링이 CSR로 수행됩니다.  
 > "use client"는 Server와 Client Component 모듈 간의 경계를 선언하는 데 사용됩니다. "use client"를 정의하면 해당 파일에 import 되는 모듈, 자식 컴포넌트를 포함하여 클라이언트 번들의 일부로 간주됩니다.
 
