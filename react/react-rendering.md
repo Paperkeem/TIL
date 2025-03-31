@@ -176,3 +176,11 @@ export default function useIntersection(handler, options = {}) {
 - useEffect 내부의 callback이 처음 마운트될 때의 handler만 기억합니다.
 - 이후 handler가 업데이트되어도 callback 내부에서는 여전히 오래된 callback을 호출합니다.
 - 최신 상태를 반영하지 못하는 클로저 문제(closure stale state issue) 가 발생할 수 있습니다.
+
+#### 8. react의 Object.is
+
+1. useState로 선언된 값들은 값을 변경해주면 레퍼런스(메모리 주소)가 변경됩니다.
+2. useEffect의 dependency array에 들어가 있는 값들은 레퍼런스가 바뀌어야만 실행됩니다.
+
+> 리액트에서 Object.is는 useState, 컴포넌트의 상태값이 변경되었을 때와 useEffect 내부의 dependency array에서 값이 변경되었는 지 검사할 때 주로 쓰입니다.  
+> Object.is는 NaN과 NaN, +0과 -0을 비교할 수 있습니다.
