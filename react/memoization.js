@@ -1,12 +1,11 @@
 class DataCache {
-  constructor(apiService, defaultCacheDuration = 1000) {
-    this.apiService = apiService; // API 서비스 주입
+  constructor(defaultCacheDuration = 1000) {
     this.cache = new Map(); // key별 데이터 저장
     this.cacheDurations = new Map(); // key별 캐시 유지 시간 저장
     this.defaultCacheDuration = defaultCacheDuration; // 기본 캐시 유지 시간
   }
 
-  async fetchData(key) {
+  async fetchData(key, fn) {
     const now = Date.now();
 
     if (this.cache.has(key)) {
@@ -19,7 +18,7 @@ class DataCache {
       }
     }
 
-    const { data } = await this.apiService.fetch(key); // API에서 데이터 가져오기
+    const { data } = await fn(); // API에서 데이터 가져오기
     this.cache.set(key, { data, timestamp: Date.now() });
 
     return data;
@@ -96,3 +95,24 @@ const getUserName = weakMapMemoize((user) => {
 
 console.log(getUserName(user)); // 캐싱 중... JongeeKim
 console.log(getUserName(user)); // JongeeKim
+
+function createUseMemo () {
+  let cache;
+  let deps;
+
+  return function useMemo(factory, nextDeps) {
+    const hasChange = !deps || !nextDeps.every((dep, idx) => Object.is(dep, deps[idx]));
+
+    if (hasChange) {
+      cache = factory();
+      deps = nextDeps;
+    }
+    return cache;
+  }
+
+}
+
+const useMemo = createUseMemo();
+const calculatedValue = useMemo(() => {
+  return a + b
+}, [a, b])
