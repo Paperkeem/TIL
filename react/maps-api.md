@@ -19,7 +19,7 @@
 #### 1. 네이버 Map API
 
 - 래스터 기반 지도에서 백터 기반 지도로 변경되면서 부드러운 확대/축소 가능(오픈 API Web Dynamic Map에서는 지원하지 않습니다.)
-- 클러스트링, 히트맵 지원 등 고급 기능 포함
+- 클러스터링, 히트맵 지원 등 고급 기능 포함
 
 > Mobile Dynamic Map은 풀 벡터 렌더링이 구현된 벡터 지도를 제공하는 반면, Web Dynamic Map은 API은 벡터 지도를 제공하지 않습니다.
 > [Maps 개요](https://guide.ncloud-docs.com/docs/maps-overview)
