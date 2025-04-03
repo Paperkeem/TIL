@@ -10,7 +10,7 @@
 
 - 훅 기반의 미니멀 스토어
 - 보일러 플레이트 거의 없으며 러닝커브 없음
-- 기본적으로 선택적 구독을 지원하여 리렌더링 최적화 (`useStore(state => state.itemStore)`)
+- 기본적으로 선택적 구독을 지원하여 리렌더링 최적화 `useStore(state => state.itemStore)`
 
 #### 3. Jotai
 
