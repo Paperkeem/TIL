@@ -27,12 +27,24 @@
 > 브라우저가 화면에 나타나는 요소를 렌더링 할 때, 웹킷(Webkit)이나 게코(Gecko)같은 렌더링 엔진을 사용합니다.
 
 1. HTML 파싱 후, DOM(Document Object Model) 트리 구축
-2. CSS 파싱 후, CSSOM(CSS Object Model) 트리 구축
+- DOM 트리는 HTML 문서의 구조를 트리 형태로 표현한 것으로, 각 태그가 node가 되어 부모-자식 관계를 형성
+
+2. CSS 파싱 후, CSS 규칙들을 기반으로 CSSOM(CSS Object Model) 트리 구축
+- CSS 규칙은 선택자(selector)와 선언(declaration)으로 구성
+- 선택자는 스타일을 적용할 HTML 요소를 정의
+- 선언은 적용할 스타일을 정의
+
 3. Javascript 실행
 4. DOM과 CSSOM을 조합하여 렌더 트리 구축
+- 렌더 트리는 화면에 실제로 표시될 요소로만 구성
+- 렌더 트리의 node는 DOM트리의 요소와 연결되며, CSSOM 트리에서 해당 요소에 적용된 스타일을 포함
+
 5. 뷰포트 기반으로 렌더 트리의 각 노드가 가지는 정확한 위치와 크기 계산(Layout 단계)
-6. 계산한 위치/크기를 기반으로 화면에 그리는 단계(Paint 단계)
-7. 요소 레이어를 합성하여 최종 화면을 출력하는 Composition 단계
+6. 계산한 위치/크기를 기반으로 텍스트, 색상, 그림자, 이미지 등 시각적 요소를 화면에 그리는 단계(Paint 단계)
+7. 요소 레이어를 결합하여 최종 화면을 출력하는 Composition 단계
+- GPU를 활용해 각 레이어를 빠르게 합성
+- transform, opacity같은 속성은 컴포지팅 단계에서만 처리
+- GPU 가속을 활용하여 성능을 최적화하고, 화면에 최종적으로 표시되는 결과를 생성
 
 #### 2-2. JavaScript는 왜 HTML 파싱을 블로킹(blocking)할 수 있을까요?
 
