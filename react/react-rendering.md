@@ -34,6 +34,8 @@
 3. Commit Phrase
 
 - 변경 된 부분을 실제 DOM에 적용하는 단계
+- 가상 DOM에서 계산된 결과를 실제 DOM에 적용하고, 변화된 UI를 브라우저에 렌더링
+- DOM 업데이트 이후에 useEffect 같은 사이드 이펙트를 발생시키는 훅 실행
 
 #### 2. useEffect의 Dependency 배열 비교 방식
 
