@@ -17,7 +17,9 @@
 
 > 페이지 전체는 서버에서 pre-render 되고(SSR or SSG), 그 안에 client component 자리는 hydration용 placeholder로 남겨집니다.
 
-> "use client"를 선언한 컴포넌트는 초기 렌더링이 CSR로 수행됩니다.  
+- App Router에서 클라이언트 컴포넌트는 기본적으로 SSR 입니다. 공식문서에서 클라이언트 컴포넌트를 설명할 때 HTML을 내려준 이후 하이드레이션 단계를 수행한다고 설명하고 있습니다.
+[공식 문서](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
+
 > "use client"는 Server와 Client Component 모듈 간의 경계를 선언하는 데 사용됩니다. "use client"를 정의하면 해당 파일에 import 되는 모듈, 자식 컴포넌트를 포함하여 클라이언트 번들의 일부로 간주됩니다.
 
 #### 3. 서버컴포넌트의 번들 사이즈가 0B로 표시되는 이유는 무엇일까요?
