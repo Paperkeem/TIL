@@ -186,3 +186,15 @@ export default function useIntersection(handler, options = {}) {
 
 > 리액트에서 Object.is는 useState, 컴포넌트의 상태값이 변경되었을 때와 useEffect 내부의 dependency array에서 값이 변경되었는 지 검사할 때 주로 쓰입니다.  
 > Object.is는 NaN과 NaN, +0과 -0을 비교할 수 있습니다.
+
+#### 9. useEffect와 useLayoutEffect
+
+1. useEffect
+- 렌더링이 완료되는 시점에 비동기적으로 실행
+- 데이터 페칭, 이벤트 리스너 추가 등 렌더링 후 화면에 영향주지 않는 작업에 주로 사용
+
+2. useLayoutEffect
+- 렌더링 후 DOM이 업데이트 되기 직전 동기적으로 실행
+- 동기적으로 실행되기 때문에 렌더링에 영향을 줌
+- 화면에 내용이 그려지기 전에 레이아웃 관련 작업이 완료
+- DOM 조작과 같은 화면이 그려지기 전에 완료되어야 하는 작업에 useLayoutEffect를 사용
