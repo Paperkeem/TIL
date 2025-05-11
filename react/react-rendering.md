@@ -141,6 +141,10 @@ useEffect(() => {
 
 > React는 이전에 등록한 함수와 이번에 등록한 함수의 의존성(dependencies)을 비교해서 실행 여부를 판단합니다.
 
+##### ✅ useEffect의 의존성 배열을 넘기지 않을 시?
+
+> 의존성 배열을 넘기지 않을 경우에는 매 렌더링마다 호출
+
 #### 8. useEffect의 dependency
 
 ```javascript
